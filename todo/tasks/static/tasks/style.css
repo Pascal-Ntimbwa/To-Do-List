@@ -1,0 +1,97 @@
+.task_icon {
+  position: absolute;
+  right: 2%;
+  top: 8%;
+  transform: translate(-50%, 50%);
+  width: 300px;
+}
+
+
+
+.task_title, .task, .delete, .add, .edit, .uname{
+    display: flex;
+    border: none;
+    justify-content: center;
+    border-radius: 10px; /* Adjust the border-radius as needed */
+    background-color: #c9ebe8; /* Light background color */
+    padding: 15px; /* Adjust padding as needed for spacing inside the div */
+    margin-bottom: 20px; /* Adjust margin as needed for spacing between tasks */
+    box-shadow: 5px 6px 6px rgba(109, 56, 56, 5); /* Add a subtle box shadow */
+    position: relative; /* To position the delete button relative to the .task div */
+  }
+
+
+.task_title {
+    border: 1px solid #c9ebe8; /* Add a border around the .task_title div */
+    border-radius: 50px;
+    background-color: #e4e8e946; /* Light background color */
+    padding: 10px; /* Adjust padding as needed for spacing inside the div */
+    box-shadow: 5px 6px 6px rgba(109, 56, 56, 5); /* Add a subtle box shadow */
+    width: 32%;
+    margin-left: 0px;
+  }
+
+
+.task {
+    background-color: #f0f0f0; /* Light background color */
+  }
+
+.task:hover {
+    background-color: #e0e0e0; /* Darken the background color on hover */
+  }
+
+  
+.task p {
+    margin: 0; /* Remove default margin for the paragraph inside .task */
+  }
+
+.delete,.edit{ 
+    width: 90%;
+    height: 50px;
+    color: #ffffff;
+    margin-left: 10px; /* Adjust margin as needed to position the delete button */
+        /* Add any additional styling as needed */
+  }
+
+.delete:hover {
+    background-color: #cf4f4f; /* Change the background color of the delete button on hover */
+    color: #ffffff; /* Change the text color of the delete button on hover */
+  }
+
+.delete {
+    background-color: #ca3535; /* Red background color */
+}
+
+.edit {
+    background-color: #570363; /* Red background color */
+}
+.edit:hover {
+    background-color: #853a85; /* Change the background color of the delete button on hover */
+    color: #ffffff; /* Change the text color of the delete button on hover */
+  }
+
+.add {
+    width: 10%;
+    height: 45px;
+    background-color: #0a0909; /* Red background color */
+    color: #ffffff;
+    border: none;
+    outline: none;
+    margin-left: 10px; /* Adjust margin as needed to position the delete button */
+        /* Add any additional styling as needed */
+    padding: 10px; /* Adjust padding as needed for spacing inside the div */
+    border-radius: 50px;
+
+  }
+
+
+.add:hover {
+    background-color: #3f413e; /* Change the background color of the delete button on hover */
+    color: #ffffff; /* Change the text color of the delete button on hover */
+  }
+
+
+  .uname {
+    width: 50%;
+  }
+  

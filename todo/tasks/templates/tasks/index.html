@@ -1,0 +1,137 @@
+
+{% extends "tasks/layout.html" %}
+
+
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12 mb-2">
+            <h5>My Tasks</h5>
+        </div>
+    </div>
+
+    {% for task in tasks_per_page %}
+        <div class="row mt-8">
+            <div class="col-md-4">
+                <div class="task">
+                    <strong><p id="task_{{ task.id }}">{{ task.title | title }}</p></strong>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div style="display: flex; justify-content:  between;">
+
+                        <div>
+                        <button class="edit" data-toggle="modal" data-target="#modal_edit_task_{{ task.id }}">Edit</button>
+                        </div>  
+
+                        <div class="modal fade" role=dialog id="modal_edit_task_{{ task.id }}" tabindex="-1" role="dialog" aria-labelledby="modal_edit_task_{{ task.id }}_label" arial-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Edit-Task</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <textarea id="content_{{ task.id }}" class="form-control">{{ task.title }}</textarea>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-primary" onclick="editTask({{ task.id }})" >Save changes</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+    
+
+                    <form action="{% url 'delete_task' task.id %}" method="post" class="ml-5" onsubmit="return confirm('Are you sure you want to delete this task?')">
+                        {% csrf_token %}
+                        <input type="submit" class="delete" value="Delete">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+        <br>
+        <br>
+
+    <form action="{% url "add_task" %}" method="post">
+        {% csrf_token %}
+
+        <div class="row">
+              <input type="text" class="task_title px-4" placeholder="Add New Task" name="title" required>
+
+              <button type="text" class="add">ADD</button>
+        </div>
+    </form>
+
+    <br>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination d-flex justify-content-center">
+            {% if tasks_per_page.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ tasks_per_page.previous_page_number }}">Previous</a></li>
+            {% endif %}
+    
+            {% for page_num in tasks_per_page.paginator.page_range %}
+                {% if page_num == tasks_per_page.number %}
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">{{ page_num }} <span class="sr-only">(current)</span></span>
+                    </li>
+                {% elif tasks_per_page.previous_page_number == page_num or tasks_per_page.next_page_number == page_num %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                {% endif %}
+            {% endfor %}
+    
+            {% if tasks_per_page.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ tasks_per_page.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+
+
+
+    <script>
+        
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length == 2) return parts.pop().split(';').shift();
+        }
+
+
+        function editTask(id) {
+            const content_to_edit = document.getElementById(`content_${id}`).value;
+        
+            fetch(`/edit_task/${id}`, {
+                method: "POST",
+                headers: {"Content-type": "application/json", "X-CSRFToken": getCookie("csrftoken")},
+                body: JSON.stringify({
+                    content: content_to_edit
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                const taskContent = document.getElementById(`task_${id}`);
+                taskContent.innerHTML = result.data;
+
+                const resultData = result.data;
+
+                // Capitalize the first letter
+                const capitalizedResult = resultData.charAt(0).toUpperCase() + resultData.slice(1);
+
+                taskContent.innerHTML = capitalizedResult;
+        
+                // Close the modal
+                $(`#modal_edit_task_${id}`).modal('hide');
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    
+
+    </script>
+
+{% endblock content %}
